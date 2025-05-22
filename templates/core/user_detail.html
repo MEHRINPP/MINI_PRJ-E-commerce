@@ -1,0 +1,71 @@
+<!-- user_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <style>
+        #password-reset-form {
+            display: none;
+        }
+    </style>
+
+    <script>
+        // Function to toggle the password reset form visibility
+        function togglePasswordResetForm() {
+            var form = document.getElementById("password-reset-form");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1>User Details</h1>
+
+    <!-- Back to Users List Button -->
+    <a href="{% url 'user_list' %}" class="btn btn-secondary mb-3">Back to Users List</a>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Username</th>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <th>Password (Hashed)</th>
+            <td>{{ hashed_password }}</td>
+        </tr>
+        <tr>
+            <th>Last Login</th>
+            <td>{{ last_login }}</td>
+        </tr>
+        <tr>
+            <th>Date Joined</th>
+            <td>{{ date_joined }}</td>
+        </tr>
+    </table>
+
+    <!-- Button to trigger the visibility of the password reset form -->
+    <button class="btn btn-warning" onclick="togglePasswordResetForm()">Reset Password</button>
+
+    <!-- Password Reset Form, initially hidden -->
+    <div id="password-reset-form">
+        <h3>Reset Password</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ password_form.as_p }}
+            <button type="submit" class="btn btn-primary">Reset Password</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+

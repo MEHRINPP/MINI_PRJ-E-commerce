@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order</title>
+    <style>
+        /* General body and page settings */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Main container for the order tracking */
+        .track-order-container {
+            background-color: #ffffff;
+            padding: 40px;
+            margin: 50px auto;
+            width: 80%;
+            max-width: 1000px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Styling for the page title */
+        h1 {
+            font-size: 2.5em;
+            color: #2d2d2d;
+            margin-bottom: 20px;
+        }
+
+        /* Welcome message */
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .user-name {
+            color: #007bff; /* Blue color */
+            font-weight: bold;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse; /* Ensures borders are merged */
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            font-size: 1em;
+            border: 1px solid #ddd; /* Adds borders between cells */
+        }
+
+        th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Table row hover effect */
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Button styling */
+        .btn-home {
+            background-color: #007bff; /* Blue background */
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            display: inline-block;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Button hover effect */
+        .btn-home:hover {
+            background-color: #0056b3; /* Darker blue when hovered */
+        }
+
+        /* Responsive styling for small screens */
+        @media (max-width: 768px) {
+            .track-order-container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .btn-home {
+                padding: 10px 25px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="track-order-container">
+        <h1>Your Orders</h1>
+        
+        <!-- Display the logged-in user's information -->
+        <p>Welcome, <span class="user-name">{{ user.username }}</span>!</p>
+        
+        {% if orders %}
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Ordered Date</th>
+                <th>Order Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><a href="{% url 'order_detail' order.id %}">{{ order.order_id }}</a></td>
+                <td>{{ order.ordered_date }}</td>
+                <td>
+                    {% if order.order_status == "Completed" %}
+                        Completed
+                    {% elif order.order_status == "Processing" %}
+                        Processing
+                    {% elif order.order_status == "Pending" %}
+                        Pending
+                    {% else %}
+                        Cancelled
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You don't have any orders to track.</p>
+{% endif %}
+
+        
+        <!-- Go Home Button -->
+        <a href="{% url 'index' %}" class="btn-home">Go to Home</a>
+    </div>
+</body>
+</html>

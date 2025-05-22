@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .section a {
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+        }
+
+        .logout-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Custom Admin Dashboard</h1>
+
+        <!-- Logout Button -->
+        <div style="text-align: right; margin-bottom: 20px;">
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+
+        
+        
+        <div class="dashboard-content">
+            <!-- Orders Section -->
+            <div class="section">
+                <a href="{% url 'recent_orders' %}">Recent Orders</a>
+            </div>
+
+            <!-- Products Section -->
+            <div class="section">
+                <a href="{% url 'product_list' %}">Products</a>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="section">
+                <a href="{% url 'category_list' %}">Categories</a>
+            </div>
+
+            <!-- Banners Section -->
+            <div class="section">
+                <a href="{% url 'banner_list' %}">Banners</a>
+            </div>
+
+            <div class="section">
+                <a href="{% url 'products_by_category' %}">Products By Category</a>
+            </div>
+
+            <!-- This is the correct link -->
+            <div class="section">
+                <a href="{% url 'user_list' %}">Users</a>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</body>
+</html>

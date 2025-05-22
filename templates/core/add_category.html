@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Category</title>
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1>Add New Category</h1>
+
+    <!-- Form to Add New Category -->
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Render form fields here -->
+        <button type="submit" class="btn btn-primary">Add Category</button>
+    </form>
+
+    <br>
+    <a href="{% url 'category_list' %}" class="btn btn-secondary">Back to Category List</a>
+</div>
+
+</body>
+</html>

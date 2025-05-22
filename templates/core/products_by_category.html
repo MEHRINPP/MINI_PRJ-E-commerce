@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products by Category</title>
+</head>
+<body>
+    <h1>Products by Category</h1>
+
+    
+
+    <!-- Canvas for the Chart.js chart -->
+    <canvas id="categoryChart" width="400" height="200"></canvas>
+
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+    <script>
+        // Ensure the chart data is parsed correctly
+        const chartData = JSON.parse('{{ chart_data|escapejs }}');  // No need to escape now
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+
+        // Log chartData to verify it's being passed correctly
+        console.log(chartData);
+
+        // Initialize the chart using Chart.js
+        new Chart(ctx, {
+            type: 'bar',  // Set the chart type to "bar"
+            data: {
+                labels: chartData.labels,  // Use the category labels
+                datasets: [{
+                    label: 'Number of Products per Category',  // Dataset label
+                    data: chartData.data,  // Product counts per category
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Bar background color
+                    borderColor: 'rgba(75, 192, 192, 1)',  // Border color for bars
+                    borderWidth: 1  // Set the border width for bars
+                }]
+            },
+            options: {
+                responsive: true,  // Make chart responsive
+                scales: {
+                    y: {
+                        beginAtZero: true  // Ensure the Y-axis starts from 0
+                    }
+                }
+            }
+        });
+    </script>
+
+    <br>
+    <a href="{% url 'custom_admin_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

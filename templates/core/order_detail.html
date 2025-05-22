@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        /* Styling for order details page */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .order-detail-container {
+            background-color: #ffffff;
+            padding: 40px;
+            margin: 50px auto;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #2d2d2d;
+            margin-bottom: 20px;
+        }
+
+        .order-detail-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .order-detail-table th, .order-detail-table td {
+            padding: 12px;
+            text-align: left;
+            font-size: 1em;
+            border: 1px solid #ddd;
+        }
+
+        .btn-home {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            display: inline-block;
+            margin-top: 30px;
+        }
+
+        .btn-home:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="order-detail-container">
+        <h1>Order Details</h1>
+
+        <table class="order-detail-table">
+            <tr>
+                <th>Order ID</th>
+                <td>{{ order.order_id }}</td>
+            </tr>
+
+            <!-- Loop through the order items to display product details -->
+            {% for item in order_items %}
+            <tr>
+                <th>Product Name</th>
+                <td>{{ item.product.name }}</td>  <!-- Display product name -->
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>${{ item.product.get_discount_price }}</td>  <!-- Display price or discount price -->
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <th>Order Date</th>
+                <td>{{ order.ordered_date }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ order.user.username }}</td>
+            </tr>
+        </table>
+
+        <a href="{% url 'track_order' %}" class="btn-home">Back to Orders</a>
+    </div>
+</body>
+</html>

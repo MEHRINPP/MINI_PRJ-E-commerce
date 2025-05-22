@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .payment-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .total-amount {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+        .StripeElement {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        button {
+            background-color: #5469d4;
+            color: white;
+            padding: 12px 0;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #4353b3;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Complete Your Payment</h2>
+        <div class="total-amount">
+            <p>Total Amount: ${{ order.get_total_price }}</p>
+        </div>
+
+        <!-- Payment Form -->
+        <form action="{% url 'create_checkout_session' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Pay with Stripe</button>
+        </form>
+    </div>
+
+    <script>
+        // Initialize Stripe
+        var stripe = Stripe("{{ STRIPE_TEST_PUBLIC_KEY }}");
+        var elements = stripe.elements();
+        var card = elements.create("card"); // Create a card element
+        card.mount("#card-element"); // Mount the card element to the DOM
+
+        // Handle form submission
+        var form = document.getElementById("payment-form");
+        var submitButton = document.getElementById("submit");
+        var errorMessage = document.getElementById("card-errors");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Confirm the card payment
+            stripe.confirmCardPayment("{{ client_secret }}", {
+                payment_method: {
+                    card: card,
+                }
+            }).then(function(result) {
+                if (result.error) {
+                    // Show error message
+                    errorMessage.textContent = result.error.message;
+                } else {
+                    // Payment was successful, redirect to success page
+                    if (result.paymentIntent.status === "succeeded") {
+                        window.location.href = "/payment-success/";
+                    } else {
+                        // Handle failed payment status here
+                        window.location.href = "/payment-failed/";
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

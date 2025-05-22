@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Wishlist</title>
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        /* Custom styles for strikethrough */
+        .original-price {
+            text-decoration: line-through;
+            color: #888;
+            margin-right: 10px;
+        }
+
+        .discounted-price {
+            color: #ff5722;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Your Wishlist</h1>
+        {% if wishlist_items %}
+            <div class="list-group">
+                {% for item in wishlist_items %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <!-- Link to product detail page -->
+                        <a href="{% url 'product_desc' item.product.pk %}">
+                            <img src="{{ item.product.img.url }}" alt="{{ item.product.name }}" width="50" height="50">
+                            <h5>{{ item.product.name }}</h5>
+                        </a>
+                        <p>
+                            {% if item.product.discount_price %}
+                                <span class="original-price">${{ item.product.price }}</span>
+                                <span class="discounted-price">${{ item.product.get_discount_price }}</span>
+                            {% else %}
+                                ${{ item.product.price }}
+                            {% endif %}
+                        </p>
+                        
+                        <a href="{% url 'remove_from_wishlist' item.product.pk %}" class="btn btn-danger btn-sm">Remove</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Your wishlist is empty.</p>
+        {% endif %}
+        <a href="{% url 'index' %}" class="btn btn-secondary mt-4">Back to Products</a>
+    </div>
+
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

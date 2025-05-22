@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews for {{ product.name }}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Custom Styles for Reviews */
+        .review-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-rating {
+            font-size: 1.2rem;
+            color: #ff5722;  /* Orange color for the star rating */
+        }
+
+        .review-user {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .review-comment {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #777;
+        }
+
+        /* Optional: Adding a separator line between reviews */
+        .review + .review {
+            border-top: 1px solid #ddd;
+        }
+
+        /* Review header style */
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .review-header span {
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Reviews for {{ product.name }}</h2>
+
+    {% if reviews %}
+        {% for review in reviews %}
+            <div class="review-card">
+                <!-- Review Header with User and Date -->
+                <div class="review-header">
+                    <div class="review-user">{{ review.user.username }}</div>
+                    <div class="review-rating">
+                        {{ review.rating }} ★
+                    </div>
+                </div>
+
+                <!-- Review Comment -->
+                <div class="review-comment">
+                    {{ review.comment }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-message">No reviews yet. Be the first to review this product.</p>
+    {% endif %}
+</div>
+
+<!-- Bootstrap JS (optional if needed) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

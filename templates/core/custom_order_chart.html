@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Orders per Day</h1>
+    <canvas id="ordersChart" width="400" height="200"></canvas>
+
+    <script>
+        // Parse the data passed from the view into the JavaScript chart data
+        const chartData = JSON.parse('{{ chart_data|escapejs }}');
+
+        // Create the chart
+        const ctx = document.getElementById('ordersChart').getContext('2d');
+        const ordersChart = new Chart(ctx, {
+            type: 'bar',  // You can change the type to line, radar, etc.
+            data: {
+                labels: chartData.labels,  // Dates from the database
+                datasets: [{
+                    label: 'Number of Orders',
+                    data: chartData.data,  // Order counts for each date
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
