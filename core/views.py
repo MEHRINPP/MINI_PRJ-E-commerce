@@ -100,10 +100,11 @@ def index(request):
     products = Product.objects.all()
     banner = Banner.objects.first()
 
-    
+    import logging
     # Search query handling
     search_query = request.GET.get('search', '').strip().lower()
-    print(f"Search query: '{search_query}'")
+    logger = logging.getLogger(__name__)
+    logger.info(f"Search query: '{search_query}'")
 
     if search_query:
      products = products.filter(
@@ -111,7 +112,7 @@ def index(request):
         Q(desc__icontains=search_query) |
         Q(category__category_name__icontains=search_query)
     )
-    print(f"After search filter: {products}")
+    logger.info(f"After search filter: {products}")
     # Filter by category
     category_id = request.GET.get('category', None)
     if category_id:
